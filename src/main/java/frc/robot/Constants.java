@@ -13,6 +13,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.util.Alert;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -23,6 +26,7 @@ package frc.robot;
  */
 public final class Constants {
   public static final Mode currentMode = Mode.SIM;
+  private static RobotType robotType = RobotType.COMPBOT;
 
   public static enum Mode {
     /** Running on a real robot. */
@@ -33,5 +37,26 @@ public final class Constants {
 
     /** Replaying from a log file. */
     REPLAY
+  }
+
+  public enum RobotType {
+    SIMBOT,
+    DEVBOT,
+    COMPBOT
+  }
+
+  public static RobotType getRobot() {
+    if (RobotBase.isReal() && robotType == RobotType.SIMBOT) {
+      new Alert("Invalid robot selected, using competition robot as default.", Alert.AlertType.ERROR).set(true);
+      robotType = RobotType.COMPBOT;
+    }
+    return robotType;
+  }
+
+  public static Mode getMode() {
+    return switch (robotType) {
+      case DEVBOT, COMPBOT -> RobotBase.isReal() ? Mode.REAL : Mode.REPLAY;
+      case SIMBOT -> Mode.SIM;
+    };
   }
 }
