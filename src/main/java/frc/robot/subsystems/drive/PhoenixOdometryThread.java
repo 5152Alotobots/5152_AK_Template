@@ -13,6 +13,8 @@
 
 package frc.robot.subsystems.drive;
 
+import static frc.robot.subsystems.drive.DriveConstants.odometryFrequencyHigh;
+
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.StatusSignal;
@@ -98,13 +100,13 @@ public class PhoenixOdometryThread extends Thread {
       signalsLock.lock();
       try {
         if (isCANFD) {
-          BaseStatusSignal.waitForAll(2.0 / Module.ODOMETRY_FREQUENCY, signals);
+          BaseStatusSignal.waitForAll(2.0 / odometryFrequencyHigh, signals);
         } else {
           // "waitForAll" does not support blocking on multiple
           // signals with a bus that is not CAN FD, regardless
           // of Pro licensing. No reasoning for this behavior
           // is provided by the documentation.
-          Thread.sleep((long) (1000.0 / Module.ODOMETRY_FREQUENCY));
+          Thread.sleep((long) (1000.0 / odometryFrequencyHigh));
           if (signals.length > 0) BaseStatusSignal.refreshAll(signals);
         }
       } catch (InterruptedException e) {

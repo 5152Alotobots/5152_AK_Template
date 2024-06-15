@@ -25,8 +25,8 @@ import frc.robot.util.Alert;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final Mode currentMode = Mode.SIM;
-  private static RobotType robotType = RobotType.COMPBOT;
+  public static final Mode currentMode = Mode.REAL;
+  private static RobotType robotType = RobotType.DEVBOT;
 
   public static enum Mode {
     /** Running on a real robot. */
@@ -47,7 +47,9 @@ public final class Constants {
 
   public static RobotType getRobot() {
     if (RobotBase.isReal() && robotType == RobotType.SIMBOT) {
-      new Alert("Invalid robot selected, using competition robot as default.", Alert.AlertType.ERROR).set(true);
+      new Alert(
+              "Invalid robot selected, using competition robot as default.", Alert.AlertType.ERROR)
+          .set(true);
       robotType = RobotType.COMPBOT;
     }
     return robotType;
@@ -58,5 +60,27 @@ public final class Constants {
       case DEVBOT, COMPBOT -> RobotBase.isReal() ? Mode.REAL : Mode.REPLAY;
       case SIMBOT -> Mode.SIM;
     };
+  }
+
+  public static final class CanIds {
+    /** **** Start Library Components CAN ID's **** */
+    public static final int PDP_CAN_ID = 1; // Power Distribution Panel
+
+    public static final int PCM_CAN_ID = 2; // Pneumatic Control Module
+
+    public static final int PIGEON2_ID = 3;
+
+    public static final int FL_DRIVE_CAN_ID = 10;
+    public static final int FL_TURN_CAN_ID = 11;
+    public static final int FL_CANCODER_CAN_ID = 12;
+    public static final int FR_DRIVE_CAN_ID = 13;
+    public static final int FR_TURN_CAN_ID = 14;
+    public static final int FR_CANCODER_CAN_ID = 15;
+    public static final int BL_DRIVE_CAN_ID = 16;
+    public static final int BL_TURN_CAN_ID = 17;
+    public static final int BL_CANCODER_CAN_ID = 18;
+    public static final int BR_DRIVE_CAN_ID = 19;
+    public static final int BR_TURN_CAN_ID = 20;
+    public static final int BR_CANCODER_CAN_ID = 21;
   }
 }
